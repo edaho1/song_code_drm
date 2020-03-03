@@ -7,6 +7,8 @@
 #include "song.h"
 #include "map.h"
 
+
+
 int main(){
 
     /*87 407C DF6E DDEB 8E8B C1D3 3AA3 */
@@ -65,5 +67,7 @@ int main(){
     }
     printf("\n");
 
-    key_gen(master -> pub_key, priv_key);
+    //key_gen(master -> pub_key, priv_key);
+
+
 }

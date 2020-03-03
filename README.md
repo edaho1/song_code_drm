@@ -1,5 +1,18 @@
-# song_code_drm
-This repository hold our DRM testing for our song
+# This repo handles song drm files, it should be used for correction of song protection files
+# This should be done before incorporating the module into the new system
 
+***Main files in the system are
+--- song.c
+--- song.h
+--- map.c
+--- map.h
+--- ecdh.c
+--- ecdh.h
+--- utils.h
+--- utils.c
+--- aes.h
 
-Still working on this will add commits when finish
+*** These files must be compiled along with main to incorporate all headers
+gcc song.c map.c utils.c aes_encrypt.c aes_decrypt.c ecdh.c main.c -g -o test
+./test
+
