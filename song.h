@@ -27,6 +27,6 @@ int key_gen(uint8_t * pub_key, uint8_t * priv_key);
 
 //int decrypt_song(const TCAesKeySched_t s, uint8_t* priv_key, uint8_t* public_key);
 
-
+int keyshared(const uint8_t* private_key, const uint8_t* others_pub, uint8_t* sharedkey);
 
 
