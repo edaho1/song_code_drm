@@ -67,7 +67,7 @@ int main(){
     status = keyshared( master ->  priv_key, user -> pub_key, sharedkey);
     printf("keyshared status: %" PRIu8 "\n", status);
     printf("sharedkey: ");
-    for (int i = 0; i < 6*ECC_PUB_KEY_SIZE; i++)
+    for (int i = 0; i < 7*ECC_PUB_KEY_SIZE; i++)
     {
         printf("%" PRIu8,sharedkey[i]);
     }

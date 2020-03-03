@@ -7,9 +7,6 @@
 #include "map.h"
 
 
-
-
-
 int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song)
 {
     const TCAesKeySched_t s;
@@ -28,7 +25,7 @@ int key_gen(uint8_t * pub_key, uint8_t * priv_key)
 
 int keyshared(const uint8_t* private_key, const uint8_t* others_pub, uint8_t* sharedkey)
 {
-    //int ecdh_shared_secret(private_key,others_pub,sharedkey);
+    int ecdh_shared_secret(private_key,others_pub,sharedkey);
     return ecdh_shared_secret(private_key,others_pub,sharedkey);
     
 };

@@ -60,7 +60,7 @@ static void prng_init(uint32_t seed)
 static void ecdh_demo(void)
 {
   static uint8_t puba[ECC_PUB_KEY_SIZE];
-  static uint8_t prva[ECC_PRV_KEY_SIZE];
+  static uint8_t prva[ECC_PRV_KEY_SIZE] = {0x55,0xff,0x72,0x56,0x3e,0x87,0x3c,0xc3,0xbe,0x29,0x7e,0xd3,0x32,0x52,0x87,0x74,0x37,0xa9,0x9f,0x81,0xb8,0x7d,0x09,0x54,0x57,0xd2,0x93,0x56};
   static uint8_t seca[ECC_PUB_KEY_SIZE];
   static uint8_t pubb[ECC_PUB_KEY_SIZE];
   static uint8_t prvb[ECC_PRV_KEY_SIZE];
@@ -76,15 +76,22 @@ static void ecdh_demo(void)
   }
 
   /* 1. Alice picks a (secret) random natural number 'a', calculates P = a * g and sends P to Bob. */
-  for (i = 0; i < ECC_PRV_KEY_SIZE; ++i)
-  {
-    prva[i] = prng_next();
-  }
+  // for (i = 0; i < ECC_PRV_KEY_SIZE; ++i)
+  // {
+  //   prva[i] = prng_next();
+  // }
   printf("Private A: ");
-  printf("%" PRIu32 "\n",prva);
+  for (int i = 0; i <ECC_PRV_KEY_SIZE; i++ )
+  {
+      printf("%" PRIu8 ,prva[i]);
+  }
+  printf("\n");
   assert(ecdh_generate_keys(puba, prva));
   printf("Public A: ");
-  printf("%" PRIu32 "\n",puba);
+  for (int i = 0; i <ECC_PUB_KEY_SIZE; i++ )
+  {
+      printf("%" PRIu8 ,puba[i]);
+  }
 
   /* 2. Bob picks a (secret) random natural number 'b', calculates Q = b * g and sends Q to Alice. */
   for (i = 0; i < ECC_PRV_KEY_SIZE; ++i)
