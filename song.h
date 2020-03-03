@@ -7,7 +7,7 @@
 
 /* structure for song protection */
 struct mvpdata{
-	uint8_t * enc_song;
+	uint8_t * enc_song[16];
 	uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
 };
 

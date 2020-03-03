@@ -6,8 +6,6 @@
 #include "constantsA.h"
 #include "song.h"
 
-
-
 int main(){
 
     /*87 407C DF6E DDEB 8E8B C1D3 3AA3 */
@@ -42,16 +40,16 @@ int main(){
     printf("status : %d\n",status);
     //encrypting song with master private key
     status1 = encrypt_song (access -> priv_key, raw_song, map -> enc_song);
-    printf("song enc status: %" PRIu8,status1);
+    printf("song enc status: %" PRIu8 "\n",status1);
     printf("raw_song: ");
-    for (int i = 0; i<2; i++)
+    for (int i = 0; i<16; i++)
     {
         printf("%" PRIu8,raw_song[i]);
     }
     printf("\n");
     
     printf("enc_song: ");
-    for (int i = 0;i <2; i++)
+    for (int i = 0;i <16; i++)
     {
         printf("%" PRIu8,map -> enc_song[i]);
     }
