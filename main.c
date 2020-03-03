@@ -11,21 +11,27 @@
 
 int main(){
 
+    //encrypt/decrypt needs
     /*87 407C DF6E DDEB 8E8B C1D3 3AA3 */
     static uint8_t * pub_key[ECC_PUB_KEY_SIZE]; //output from keygen
     static uint8_t * priv_key[ECC_PRV_KEY_SIZE]; // input to key gen (user must provide)
     static uint8_t * mpriv_key[ECC_PRV_KEY_SIZE] = {0x55,0xff,0x72,0x56,0x3e,0x87,0x3c,0xc3,0xbe,0x29,0x7e,0xd3,0x32,0x52,0x87,0x74,0x37,0xa9,0x9f,0x81,0xb8,0x7d,0x09,0x54,0x57,0xd2,0x93,0x56};
     int status,status1;
 
+    //song needs
     uint8_t* raw_song[16] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
     uint8_t* enc_song[16];
-     uint8_t* sharedkey[6*ECC_PUB_KEY_SIZE];
+    uint8_t* sharedkey[6*ECC_PUB_KEY_SIZE];
 
+    //structure needs
     struct user *master = {mpriv_key, pub_key}; //handling master key for encryption 
     struct mvpdata *map = {enc_song, master -> pub_key};
     struct user *user = {priv_key, pub_key};
     status  = key_gen(master -> pub_key, master -> priv_key);
 
+    // mapping needs
+    char mster = "master";
+    int master_key = "e760";
     //printing results
     printf("Priv: ");
     for (int i = 0; i <ECC_PRV_KEY_SIZE; i++)
@@ -68,6 +74,9 @@ int main(){
     printf("\n");
 
     //key_gen(master -> pub_key, priv_key);
+    // mapping master to file
+    status = write_mapping(mster, master_key);
+    printf("\nmap status: %u\n", status);
 
 
 }
