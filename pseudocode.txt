@@ -1,0 +1,131 @@
+const uint8_t *raw_song,
+encrypted song structure
+struct mvpdata{
+	uint8_t * enc_song;
+	uint8_t* master_pub_key;
+	map mp{username: enc_key} 
+};
+
+define user
+struct user{
+	string name;
+	uint8_t* priv_key;
+	uint8_t* public_key;
+	int return_public_key(uint8_t* public_key);
+	};
+	
+user master;	
+user peter;
+user edmund;
+user otily;
+user jay;
+user aaron;
+mvpdata tacos;
+
+define master_key
+	uint8_t* master_key = e760;
+
+define an encrypted song 
+        const TCAesKeySched_t s
+		int tc_aes128_set_encrypt_key(s, master_key);
+		
+		int tc_aes_encrypt(tacos.enc_song, raw_song, s);
+		
+peter.priv_key = "random_data"
+int ecdh_generate_keys(peter.pub_key, peter.priv_key);
+
+master.priv_key = "AllHailToMaster"
+int ecdh_generate_keys(master.pub_key, master.priv_key);
+tacos.master_pub_key = master.pub_key;
+int tc_aes128_set_encrypt_key(s,master.priv_key);
+int tc_aes_encrypt(tacos.mp.master.enc_key, master_key 
+		    s);
+
+uint8_t * temp;
+master.return_public_key(temp);
+int ecdh_shared_secret(peter.priv_key, temp, uint8_t* k_peter);
+
+otily.priv_key = "helloooooooo"
+int ecdh_generate_keys(otily.pub_key, otily.priv_key);
+int ecdh_shared_secret(otily.priv_key, temp, uint8_t* k_otily);
+
+aaron.priv_key = "I hate edmund"
+int ecdh_generate_keys(aaron.pub_key, aaron.priv_key);
+int ecdh_shared_secret(aaron.priv_key, temp, uint8_t* k_aaron);
+
+jay.priv_key = "seeme"
+int ecdh_generate_keys(jay.pub_key, jay.priv_key);
+int ecdh_shared_secret(jay.priv_key, temp, uint8_t* k_jay);
+
+int tc_aes128_set_encrypt_key(s, k_peter)
+tacos.mp.insert(peter)
+int tc_aes_encrypt(tacos.mp.peter.enc_key, master_key, s);
+
+int tc_aes128_set_encrypt_key(s, k_otily);
+tacos.mp.insert(otily);
+int tc_aes_encrypt(tacos.mp.otily.enc_key, master_key, s);
+
+int tc_aes128_set_encrypt_key(s, k_jay);
+tacos.mp.insert(jay);
+int tc_aes_encrypt(tacos.mp.jay.enc_key, master_key, s);
+
+int tc_aes128_set_encrypt_key(s, k_aaron);
+tacos.mp.insert(aaron);
+int tc_aes_encrypt(tacos.mp.aaron.enc_key, master_key, s);
+
+//Provisioning is done
+
+//Aaron is listening to the song 
+aaron.priv_key = "I hate edmund";
+
+int ecdh_generate_keys(aaron.pub_key, aaron.priv_key);
+
+uint8_t* aaron_sharedsecret, *temp; 
+temp = tacos.master_pub_key;
+
+int ecdh_shared_secret(aaron.priv_key, temp, k_aaron_sharedsecret);
+TCAesKeySched_t s;
+
+int tc_aes128_set_decrypt_key(s,   k_aaron_sharedsecret);
+uint8_t* encrypted_master_key = tacos.mp.aaron.enc_key;
+uint8_t* master_key;
+int tc_aes_decrypt(master_key , encrypted_master_key,s);
+int tc_aes128_set_decrypt_key(s,   master_key);
+uint8_t* raw_song;
+int tc_aes_decrypt(raw_song , tacos.enc_song,;s);
+
+//Peter is listening to the song...
+peter.priv_key ="random_data";
+int ecdh_generate_keys(peter.pub_key, peter.priv_key);
+
+temp = tacos.master_pub_key;
+
+uint8_t* peter_sharedsecret;
+int ecdh_shared_secret(peter.priv_key, temp, k_peter_sharedsecret);
+
+TCAesKeySched_t s;
+
+int tc_aes128_set_decrypt_key(s,   k_peter_sharedsecret);
+
+uint8_t* encrypted_master_key = tacos.mp.peter.enc_key;
+
+uint8_t* master_key;
+
+int tc_aes_decrypt(master_key , encrypted_master_key,s);
+int tc_aes128_set_decrypt_key(s,   master_key);
+uint8_t* raw_song;
+int tc_aes_decrypt(raw_song , tacos.enc_song, s);
+
+
+
+// Unprotected Song
+uint8_t *raw_song;
+uint8_t* master_key;
+// master's private key
+master.priv_key = "AllHailToMaster";
+//use the master private key to decrypt the master key
+int tc_aes128_set_decrypt_key(s, master.priv_key);
+int tc_aes_decrypt(master_key, tacos.mp.master.enc_key,s);
+//use the master key to decrypt the encrypted song
+int tc_aes128_set_decrypt_key(s, master_key);
+int tc_aes_decrypt(raw_song,tacos.enc_song,  s);
