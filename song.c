@@ -30,27 +30,3 @@ int keyshared(const uint8_t* private_key, const uint8_t* others_pub, uint8_t* sh
     status = ecdh_shared_secret(private_key,others_pub,sharedkey);
     return status;
 };
-
-// int write_mapping(char key, int val)
-// {
-//     map_int_t m;
-//     map_init(&m);
-//     map_set(&m, key,val);
-//     map_deinit(&m);
-
-//     return;
-// };
-
-// int read_mapping(char key)
-// {
-//     map_int_t m;
-//     map_init(&m);
-//     int *val = map_get(&m,key);
-//     if(val)
-//     {
-//         printf("value: %d\n", *val);
-//     }else{
-//         printf("value not found\n");
-//     }
-//     map_deinit(&m);
-// };

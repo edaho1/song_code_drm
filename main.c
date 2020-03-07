@@ -9,16 +9,14 @@
 #include "song.h"
 #include "map.h"
 
-
-
     // mapping needs
     //char mster = "master";
     uint8_t master_key[4] = {0x65,0x37,0x36,0x30};
 
     //song needs
-    uint8_t* raw_song[16] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
-    uint8_t* enc_song[16];
-    uint8_t* sharedkey[6*ECC_PUB_KEY_SIZE];
+    uint8_t raw_song[16] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
+    uint8_t enc_song[16];
+    uint8_t sharedkey[6*ECC_PUB_KEY_SIZE];
 
 int main(){
 
@@ -74,7 +72,7 @@ int main(){
     }
     printf("\n");  
 
-   // encrypt_song(master_key, raw_song,enc_song); 
+    encrypt_song(master_key, raw_song,enc_song); 
 
     free(aaron);
     
