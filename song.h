@@ -6,10 +6,10 @@
 /* This code attempt to solve the drm problem of song encryption and decryption */
 
 /* structure for song protection */
-// struct mvpdata{
-// 	uint8_t * enc_song[16];
-// 	uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
-// };
+ struct mvpdata{
+ 	uint8_t * enc_song[16];
+    uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
+ };
 
 
 struct user{

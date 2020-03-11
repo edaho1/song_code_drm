@@ -14,6 +14,12 @@
     uint8_t master_key[4] = {0x65,0x37,0x36,0x30};
 
     //song needs
+    //step1: put actual song
+    //step2: add demo
+    //step3: run complete code (checking enc/dec)
+    //step4: change example song with encrypted song
+    //step5: change mipod.h so it can decrypt
+    //step6: start changing mipod struct (add enc/dec key)
     uint8_t raw_song[16] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
     uint8_t enc_song[16];
     uint8_t sharedkey[6*ECC_PUB_KEY_SIZE];
