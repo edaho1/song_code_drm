@@ -5,16 +5,61 @@
 #include "constantsA.h"
 #include "song.h"
 #include "map.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stddef.h>
 
 
-int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song)
+int schedule (uint8_t* key,const TCAesKeySched_t s)
 {
-    const TCAesKeySched_t s;
+    int result = TC_PASS;
+    //const TCAesKeySched_t s;
+
+
+    //testing to make sure key schedule was sucessful    
+    TC_PRINT("AES128 %s (NIST key schedule test):\n", __func__);
+	if (tc_aes128_set_encrypt_key(&s, key) == 0) {
+		TC_ERROR("AES128 ENC %s key schedule failed.\n", __func__);
+		result = TC_FAIL;
+		goto exitTest1;
+	}
+
     tc_aes128_set_encrypt_key(s, key);
-    tc_aes_encrypt(enc_song, raw_song, s);
-    return tc_aes_encrypt(enc_song, raw_song, s);
+    
+
+exitTest1:
+	TC_END_RESULT(result);
+	return result;
 };
 
+encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song,uint8_t * expected)
+{
+    // raw song and enc song is of size 16 bytes while
+    // key is of size 16-bytes
+    const TCAesKeySched_t s;
+    int result = TC_PASS;
+    schedule (key,s);
+    TC_PRINT("AES128 %s (NIST encryption test):\n", __func__);
+
+	(void)tc_aes128_set_encrypt_key(&s, key);
+	if (tc_aes_encrypt(enc_song, raw_song, &s) == 0) {
+		TC_ERROR("AES128 %s (encryption) failed.\n",
+			 __func__);
+		result = TC_FAIL;
+		goto exitTest2;
+	}
+
+	result = check_result(2, expected, sizeof(expected), enc_song,
+			      sizeof(enc_song));
+
+exitTest2:
+	TC_END_RESULT(result);
+
+	return result;
+    tc_aes_encrypt(enc_song, raw_song, s);
+
+};
 
 int key_gen(uint8_t * pub_key, uint8_t * priv_key)
 {
