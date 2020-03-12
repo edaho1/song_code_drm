@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include "aes.h"
 #include "ecdh.h"
 #include "utils.h"
@@ -9,14 +10,14 @@
 #include "song.h"
 #include "map.h"
 
-#define NUM_OF_NIST_KEYS 16
-#define NUM_OF_FIXED_KEYS 128
+#define KEYS 16
+
 
 int main(){
 
     // mapping needs
     //char mster = "master";
-    uint8_t master_key[16] = {0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f};
+    uint8_t * master_key[KEYS] = {0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f};
 
     //song needs
     //step1: put actual song
@@ -25,8 +26,8 @@ int main(){
     //step4: change example song with encrypted song
     //step5: change mipod.h so it can decrypt
     //step6: start changing mipod struct (add enc/dec key)
-    uint8_t raw_song[16] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
-    uint8_t enc_song[16];
+    uint8_t * raw_song[KEYS] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
+    uint8_t * enc_song[KEYS];
     uint8_t sharedkey[6*ECC_PUB_KEY_SIZE];
 
     //encrypt/decrypt needs
@@ -80,7 +81,27 @@ int main(){
     }
     printf("\n");  
 */
-    //encrypt_song(master_key, raw_song,enc_song); 
+    printf("master key: ");
+    for (int i = 0; i <  16; i++)
+    {
+        printf("%2C", master_key[i]);
+    }
+    printf("\n");
+    printf("raw song: ");
+    for (int i = 0; i <  16; i++)
+    {
+        printf("%2x", raw_song[i]);
+    }
+    printf("\n");
+ 
+    assert(encrypt_song (master_key,raw_song, enc_song));
+
+    printf("encrypted song: ");
+    for (int i = 0; i <  16; i++)
+    {
+        printf("%02x", enc_song[i]);
+    }
+    printf("\n");
 
     free(aaron);
     

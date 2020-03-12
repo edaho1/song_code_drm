@@ -1,0 +1,6 @@
+[submodule "tiny-ECDH-c"]
+	path = tiny-ECDH-c
+	url = git@github.com:kokke/tiny-ECDH-c.git
+[submodule "tinycrypt"]
+	path = tinycrypt
+	url = git@github.com:intel/tinycrypt.git
