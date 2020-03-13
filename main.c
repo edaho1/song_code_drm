@@ -15,9 +15,36 @@
 
 int main(){
 
-    // mapping needs
-    //char mster = "master";
+    
+    // Testing encryption and key schedule
+    // const struct tc_aes_key_sched_struct expected = {
+    //     {
+    //         0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c,
+    //         0xa0fafe17, 0x88542cb1, 0x23a33939, 0x2a6c7605,
+    //         0xf2c295f2, 0x7a96b943, 0x5935807a, 0x7359f67f,
+    //         0x3d80477d, 0x4716fe3e, 0x1e237e44, 0x6d7a883b,
+    //         0xef44a541, 0xa8525b7f, 0xb671253b, 0xdb0bad00,
+    //         0xd4d1c6f8, 0x7c839d87, 0xcaf2b8bc, 0x11f915bc,
+    //         0x6d88a37a, 0x110b3efd, 0xdbf98641, 0xca0093fd,
+    //         0x4e54f70e, 0x5f5fc9f3, 0x84a64fb2, 0x4ea6dc4f,
+    //         0xead27321, 0xb58dbad2, 0x312bf560, 0x7f8d292f,
+    //         0xac7766f3, 0x19fadc21, 0x28d12941, 0x575c006e,
+    //         0xd014f9a8, 0xc9ee2589, 0xe13f0cc8, 0xb6630ca6
+    //     }
+	// };
     uint8_t * master_key[KEYS] = {0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f};
+	const uint8_t nist_key[KEYS] = {
+		0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+		0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c
+	};
+	const uint8_t nist_input[KEYS] = {
+		0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
+		0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34
+	};
+	// const uint8_t expected[KEYS] = {
+	// 	0x39, 0x25, 0x84, 0x1d, 0x02, 0xdc, 0x09, 0xfb,
+	// 	0xdc, 0x11, 0x85, 0x97, 0x19, 0x6a, 0x0b, 0x32
+	// };
 
     //song needs
     //step1: put actual song
@@ -26,7 +53,17 @@ int main(){
     //step4: change example song with encrypted song
     //step5: change mipod.h so it can decrypt
     //step6: start changing mipod struct (add enc/dec key)
-    uint8_t * raw_song[KEYS] ={0x00,0x01, 0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,0x0A,0X0B,0X0C,0X0D,0X0E,0X0F};
+    // 000102030405060708090A0B0C0D0E0F
+    const uint8_t raw_song[KEYS] ={
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0A, 0X0B, 0X0C, 0X0D, 0X0E, 0X0F
+    };
+    // expected result: 50fe67cc996d32b6da0937e99bafec60
+    const uint8_t expected[KEYS] =
+    {
+        0x50, 0xfe, 0x67, 0xcc, 0x99, 0x6d, 0x32, 0xb6, 
+        0xda, 0x09, 0x37, 0xe9, 0x9b, 0xaf, 0xec, 0x60
+    };
     uint8_t * enc_song[KEYS];
     uint8_t sharedkey[6*ECC_PUB_KEY_SIZE];
 
@@ -34,7 +71,11 @@ int main(){
     /*87 407C DF6E DDEB 8E8B C1D3 3AA3 */
     static uint8_t pub_key[ECC_PUB_KEY_SIZE]; //output from keygen
     static uint8_t  pub_key2[ECC_PUB_KEY_SIZE]; //output from keygen
-    static uint8_t  priv_key2[ECC_PRV_KEY_SIZE] = {0x95,0xff,0x72,0x56,0x3e,0x57,0x3c,0x35,0xbe,0x35,0x7e,0xd3,0x32,0xb8,0xaa,0x09,0x54,0x57,0xd2,0x93,0x57,0xd2,0x93,0x56}; // input to key gen (user must provide)
+    static uint8_t  priv_key2[ECC_PRV_KEY_SIZE] = {
+        0x95,0xff,0x72,0x56,0x3e,0x57,0x3c,0x35,
+        0xbe,0x35,0x7e,0xd3,0x32,0xb8,0xaa,0x09,
+        0x54,0x57,0xd2,0x93,0x57,0xd2,0x93,0x56
+    }; // input to key gen (user must provide)
     static uint8_t mpriv_key[ECC_PRV_KEY_SIZE] = {0x55,0xff,0x72,0x56,0x3e,0x87,0x3c,0xc3,0xbe,0x29,0x7e,0xd3,0x32,0x52,0x87,0x74,0x37,0xa9,0x9f,0x81,0xb8,0x7d,0x09,0x54};
     //static uint8_t * mpriv_key[ECC_PRV_KEY_SIZE] = {0x55,0xff,0x72,0x56,0x3e,0x87,0x3c,0xc3,0xbe,0x29,0x7e,0xd3,0x32,0x52,0x87,0x74,0x37,0xa9,0x9f,0x81,0xb8,0x7d,0x09,0x54,0x57,0xd2,0x93,0x56};
 
@@ -50,58 +91,20 @@ int main(){
     memcpy(aaron -> priv_key, priv_key2,sizeof(priv_key2));
 
     assert(key_gen(master -> pub_key, master -> priv_key));
- /*
-    printf("master priv: ");
-        for(uint32_t i = 0; i <ECC_PRV_KEY_SIZE; i++)
-    {
-        printf("%x",master -> priv_key[i]);
-    }
-    printf("\n");
 
-    printf("master pub: ");
-    for (uint32_t i = 0; i <ECC_PUB_KEY_SIZE; i++)
-    {
-        printf("%x",master -> pub_key[i]);
-    }
-    printf("\n");   
-*/
     assert(key_gen(aaron->pub_key, aaron->priv_key));
-/*
-    printf("aaron priv: ");
-    for(uint32_t i = 0; i <ECC_PRV_KEY_SIZE; i++)
-    {
-        printf("%x",(aaron->priv_key)[i]);
-    }
-    printf("\n");
 
-     printf("Aaron pub: ");
-    for (uint32_t i = 0; i <ECC_PUB_KEY_SIZE; i++)
-    {
-        printf("%x",(aaron->pub_key)[i]);
-    }
-    printf("\n");  
-*/
-    printf("master key: ");
-    for (int i = 0; i <  16; i++)
-    {
-        printf("%2C", master_key[i]);
-    }
-    printf("\n");
-    printf("raw song: ");
-    for (int i = 0; i <  16; i++)
-    {
-        printf("%2x", raw_song[i]);
-    }
-    printf("\n");
+    //schedule (&nist_key,expected);
+  
  
-    assert(encrypt_song (master_key,raw_song, enc_song));
-
-    printf("encrypted song: ");
-    for (int i = 0; i <  16; i++)
-    {
-        printf("%02x", enc_song[i]);
-    }
-    printf("\n");
+    encrypt_song (nist_key,raw_song, enc_song,expected);
+    printf("%d\n",strcmp(raw_song,expected));
+    // printf("encrypted song: ");
+    // for (int i = 0; i <  16; i++)
+    // {
+    //     printf("%x", enc_song[i]);
+    // }
+    // printf("\n");
 
     free(aaron);
     

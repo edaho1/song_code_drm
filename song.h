@@ -103,9 +103,9 @@ struct user{
     uint8_t username[15];
 };
 
-int schedule (uint8_t* key,const TCAesKeySched_t s);
-int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
-
+//int schedule (uint8_t* key);
+//int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
+int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song, uint8_t * expected);
 //int return_public_key(uint8_t* public_key);
 
 int key_gen(uint8_t * pub_key, uint8_t * priv_key);
