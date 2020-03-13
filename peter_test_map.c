@@ -3,10 +3,32 @@
 #include "map.h"
 
 
+char ConvertToString(uint8_t key[],char usr_pin_str[])
+{
+    uint8_t * ptr= key;
+    int n = 3; //n would be the number of terms in user_pin a fixed value
+
+    printf("%s", usr_pin_str);
+    for (int i = 0; i < n; i++)
+    {
+        printf("%x", key[i]);
+        usr_pin_str[i] = (char* ) (ptr[i]);
+        printf("%c\t", usr_pin_str[i]);
+    }
+    printf("\n");
+    //printf("%s\n", usr_pin_str);
+    //return usr_pin_str;
+}
+
+int ConvertToUint8() //after the characterstring is stored when required to print, we convert back to uint8_t
+{
+
+}
+
 int mp_data(char * user_name, uint8_t user_pin[])
 {
-    typedef map_t(unsigned char *) uint_map_t;
-    uint_map_t usr_data;
+    //typedef map_t(unsigned char *) uint_map_t;
+    map_str_t usr_data;
     map_init(&usr_data);
     printf("I am here\n");
  //   printf("%s\t",user_name);
@@ -42,13 +64,20 @@ int mp_data(char * user_name, uint8_t user_pin[])
 int main()
 {
    char user_name [] = "solomon";
-   const uint8_t user_pin [3] = {0x23, 0x25, 0x27}; 
-
+   const uint8_t user_pin [3] = {0x23, 0x25, 0x27};
+   char user_str[3];
+  // int n = 3; 
+/*
    for (int i=0;i<3;i++)
    {
    printf("%x",user_pin[i]);
    }
-   printf("\n");
-   mp_data(&user_name, user_pin);
+   printf("\n");*/
+    ConvertToString(user_pin,user_str);
+    printf("size of str: %d\n",strlen(user_str));
+    printf("%s\n", user_str);
+
+    printf("Done\r\n");
+   //mp_data(&user_name, user_pin);
    return 0;
 }
