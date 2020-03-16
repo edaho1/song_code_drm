@@ -15,6 +15,7 @@
 
 int main(){
 
+    //fread(*fptr, size_t size_of_elements, size_t number_of_elements, FILE *a_file);
     
     // Testing encryption and key schedule
     // const struct tc_aes_key_sched_struct expected = {
@@ -99,12 +100,12 @@ int main(){
  
     encrypt_song (nist_key,raw_song, enc_song,expected);
     printf("%d\n",strcmp(raw_song,expected));
-    // printf("encrypted song: ");
-    // for (int i = 0; i <  16; i++)
-    // {
-    //     printf("%x", enc_song[i]);
-    // }
-    // printf("\n");
+    printf("encrypted song: ");
+    for (int i = 0; i <  16; i++)
+    {
+        printf("%d", enc_song[i]);
+    }
+    printf("\n");
 
     free(aaron);
     
