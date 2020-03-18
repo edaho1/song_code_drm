@@ -15,6 +15,7 @@
 
 int main(){
 
+    //fread(*fptr, size_t size_of_elements, size_t number_of_elements, FILE *a_file);
     
     // Testing encryption and key schedule
     // const struct tc_aes_key_sched_struct expected = {
@@ -32,7 +33,7 @@ int main(){
     //         0xd014f9a8, 0xc9ee2589, 0xe13f0cc8, 0xb6630ca6
     //     }
 	// };
-    uint8_t * master_key[KEYS] = {0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f};
+    const uint8_t master_key[KEYS] = {0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f};
 	const uint8_t nist_key[KEYS] = {
 		0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
 		0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c
@@ -64,7 +65,7 @@ int main(){
         0x50, 0xfe, 0x67, 0xcc, 0x99, 0x6d, 0x32, 0xb6, 
         0xda, 0x09, 0x37, 0xe9, 0x9b, 0xaf, 0xec, 0x60
     };
-    uint8_t * enc_song[KEYS];
+    uint8_t enc_song[KEYS];
     uint8_t sharedkey[6*ECC_PUB_KEY_SIZE];
 
     //encrypt/decrypt needs
@@ -99,12 +100,12 @@ int main(){
  
     encrypt_song (nist_key,raw_song, enc_song,expected);
     printf("%d\n",strcmp(raw_song,expected));
-    // printf("encrypted song: ");
-    // for (int i = 0; i <  16; i++)
-    // {
-    //     printf("%x", enc_song[i]);
-    // }
-    // printf("\n");
+    printf("encrypted song: ");
+    for (int i = 0; i <  16; i++)
+    {
+        printf("%d", enc_song[i]);
+    }
+    printf("\n");
 
     free(aaron);
     
