@@ -30,7 +30,7 @@ int mp_data(char * user_name, uint8_t key[])
     map_init(&usr_data);
 
     uint8_t * ptr = key;
-    printf("%d\n",sizeof(ptr));
+    printf("%ld\n",sizeof(ptr));
     for (int i=0; i<3; i++)
     {
     printf("%x\n", ptr[i]);
