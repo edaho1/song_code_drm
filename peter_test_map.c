@@ -23,6 +23,8 @@ int ConvertToUint8() //after the characterstring is stored when required to prin
 
 }
 */
+
+// testing out pointer with map algo
 int mp_data(char * user_name, uint8_t key[])
 {
     typedef map_t(uint8_t *) uint_map_t;
