@@ -38,13 +38,18 @@ int mp_data(char * user_name, uint8_t key[])
     printf("%x\n", ptr[i]);
     }
 
-    map_set(&usr_data, user_name, ptr);
+    map_set(&usr_data, user_name, * ptr);
  
-    uint8_t val = map_get(&usr_data, user_name);
+    uint8_t * val = map_get(&usr_data, user_name);
 
+    printf("%x\n",  * val);
+    //check if array can be accessed
+    uint8_t arr[3];
+    arr[0] = * val;
     for (int i=0; i<3; i++)
     {
-        printf("%x", val);
+        arr[i] = * val + i * sizeof(uint8_t);
+        printf("%x\n",  arr[i]);
     }
     printf("\n");
 /*  }
