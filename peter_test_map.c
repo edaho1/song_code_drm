@@ -38,10 +38,10 @@ int mp_data(char * user_name, uint8_t key[])
     //test ended
     // We shall also include name and values of the shared pin
     //map_deinit(&shared_data);
-    map_deinit(&usr_data);
+    map_deinit(&usr_data);//I think we do not deinintialize in our case. Dunno fr fr
 }
 
-int main()
+int main()//This would change from main to be used in program
 {
    char user_name [] = "James";
    uint8_t user_pin [] = {0x23, 0x25, 0x27};//The size of this array is the size of the pin and should be universal valued
