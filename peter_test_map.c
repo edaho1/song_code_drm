@@ -24,15 +24,22 @@ int mp_data(char * user_name, uint8_t key[])
     //test to see what is in the map
     uint8_t * val = map_get(&usr_data, user_name);
 
+    /*
+     * This guy only prints out the first value 
+    */
     printf("%x\n",  * val);
+
     //Only the pointer is saved. But because arrays in C are set to consecutive memory locations i access as below
     //check if array can be accessed
     uint8_t arr[3];
     arr[0] = * val;
     for (int i=0; i<3; i++)
     {
-        arr[i] = * val + i * sizeof(uint8_t);
-        printf("%x\n",  arr[i]);
+        /* I don't think this one is reading from the memory location.
+         * take a look at the output and the memory location itself
+         * its not printing what you expect to be printed */ 
+        arr[i] = *val + i * sizeof(uint8_t);
+        printf("%x",  arr[i]);
     }
     printf("\n");
     //test ended
