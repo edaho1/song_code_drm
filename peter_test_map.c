@@ -1,74 +1,51 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "map.h"
-
-/*
-char ConvertToString(uint8_t key[],char usr_pin_str[])
-{
-    uint8_t * ptr= key;
-    int n = 3; //n would be the number of terms in user_pin a fixed value
-    
-    printf("%s", usr_pin_str);
-    for (int i = 0; i < n; i++)
-    {
-        usr_pin_str[i] = (char* ) (ptr[i]);
-    }
-    printf("\n");
-    printf("%s\n", usr_pin_str);
-    //return usr_pin_str;
-}
-
-int ConvertToUint8() //after the characterstring is stored when required to print, we convert back to uint8_t
-{
-
-}
-*/
-
-// testing out pointer with map algo
+//Function passes in the user_name and user_id
 int mp_data(char * user_name, uint8_t key[])
 {
+    //Create a map with name as string and value as uint8_t pointer
     typedef map_t(uint8_t *) uint_map_t;
     uint_map_t usr_data;
     map_init(&usr_data);
 
+    //test to see that the pointer is pointing where it should be
     uint8_t * ptr = key;
     printf("%ld\n",sizeof(ptr));
     for (int i=0; i<3; i++)
     {
     printf("%x\n", ptr[i]);
     }
+    //test end
 
-    map_set(&usr_data, user_name, ptr);
+    //put name and value in map
+    map_set(&usr_data, user_name, * ptr);
  
-    uint8_t val = map_get(&usr_data, user_name);
+    //test to see what is in the map
+    uint8_t * val = map_get(&usr_data, user_name);
 
+    printf("%x\n",  * val);
+    //Only the pointer is saved. But because arrays in C are set to consecutive memory locations i access as below
+    //check if array can be accessed
+    uint8_t arr[3];
+    arr[0] = * val;
     for (int i=0; i<3; i++)
     {
-        printf("%x", val);
+        arr[i] = * val + i * sizeof(uint8_t);
+        printf("%x\n",  arr[i]);
     }
     printf("\n");
-/*  }
-    if (val) {
-    printf("value: %s\n", &*val);
-    } else {
-    printf("value not found\n");
-    }
-    
-*/
+    //test ended
+    // We shall also include name and values of the shared pin
     //map_deinit(&shared_data);
-    map_deinit(&usr_data);
+    map_deinit(&usr_data);//I think we do not deinintialize in our case. Dunno fr fr
 }
 
-int main()
+int main()//This would change from main to be used in program
 {
    char user_name [] = "James";
-   uint8_t user_pin [] = {0x23, 0x25, 0x27};
-/*
-   for (int i=0; i<3; i++)
-   {
-   printf("%x", user_pin[i]);
-   }
-   */
-   mp_data(&user_name, user_pin);
+   uint8_t user_pin [] = {0x23, 0x25, 0x27};//The size of this array is the size of the pin and should be universal valued
+
+   mp_data(&user_name, user_pin);//This would also take in shared pin values for second map
    return 0;
 }
