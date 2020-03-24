@@ -1,29 +1,54 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "map.h"
+
+char ConvertToString(uint8_t key[],char usr_pin_str[])
+{
+    uint8_t * ptr= &key[0];
+    int n = 3; //n would be the number of terms in user_pin a fixed value
+
+    for (int i = 0; i < n; i++)
+    {
+        usr_pin_str[i] = (char* ) *(ptr + (i * sizeof(key[0])));
+    //This takes advantage of consecutive values of an array
+    }
+
+    printf("\n");
+    printf("%s\n", usr_pin_str);
+    //return usr_pin_str;
+}
+
+
 //Function passes in the user_name and user_id
-int mp_data(char * user_name, uint8_t key[])
+int mp_data(char * user_name, char * user_str)
 {
     //Create a map with name as string and value as uint8_t pointer
-    typedef map_t(uint8_t *) uint_map_t;
-    uint_map_t usr_data;
+    //typedef map_t(uint8_t *) uint_map_t;
+    //uint_map_t usr_data;
+
+  //  char * test = user_str;
+  //  printf("%s\n", user_str);
+
+    map_str_t usr_data;
     map_init(&usr_data);
 
-    //test to see that the pointer is pointing where it should be
-    uint8_t * ptr = key;
-    printf("%ld\n",sizeof(ptr));
-    for (int i=0; i<3; i++)
-    {
-    printf("%x\n", ptr[i]);
-    }
-    //test end
+//    uint8_t * ptr = key;
+
 
     //put name and value in map
-    map_set(&usr_data, user_name, * ptr);
+    map_set(&usr_data, user_name, user_str);
  
     //test to see what is in the map
-    uint8_t * val = map_get(&usr_data, user_name);
+ //  uint8_t * val = map_get(&usr_data, user_name);
 
+    char * val = map_get(&usr_data, user_name);
+    while (*val !='\0')
+    {
+    printf ("%c", *val++);
+    }
+    printf("\n");
+   // char * val[] = 
+/*
     printf("%x\n",  * val);
     //Only the pointer is saved. But because arrays in C are set to consecutive memory locations i access as below
     //check if array can be accessed
@@ -34,7 +59,7 @@ int mp_data(char * user_name, uint8_t key[])
         arr[i] = * val + i * sizeof(uint8_t);
         printf("%x\n",  arr[i]);
     }
-    printf("\n");
+    printf("\n");*/
     //test ended
     // We shall also include name and values of the shared pin
     //map_deinit(&shared_data);
@@ -45,7 +70,11 @@ int main()//This would change from main to be used in program
 {
    char user_name [] = "James";
    uint8_t user_pin [] = {0x23, 0x25, 0x27};//The size of this array is the size of the pin and should be universal valued
+   int n = 3;
+   char user_str [3];
+   user_str[n] = '\0';
+   ConvertToString(user_pin, user_str);
 
-   mp_data(&user_name, user_pin);//This would also take in shared pin values for second map
+   mp_data(&user_name, &user_str);//This would also take in shared pin values for second map
    return 0;
 }
