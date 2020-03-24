@@ -2,14 +2,14 @@
 #include <inttypes.h>
 #include "map.h"
 
-char ConvertToString(uint8_t key[],char * user_str)
+char ConvertToString(uint8_t val[],char * user_str)
 {
-    uint8_t * ptr= &key[0];
+    uint8_t * ptr= &val[0];
     int n = 3; //n would be the number of terms in user_pin a fixed value
 
     for (int i = 0; i < n; i++)
     {
-        user_str[i] = (char* ) *(ptr + (i * sizeof(key[0])));
+        user_str[i] = (char* ) *(ptr + (i * sizeof(val[0])));
     //This takes advantage of consecutive values of an array
     }
 
@@ -34,9 +34,10 @@ int mp_data(char * user_name, char * user_str)
 
 //    uint8_t * ptr = key;
 
-
+   // int a[] = atoi(&user_str);
+   // printf("integer: %ls", a);
     //put name and value in map
-    map_set(&usr_data, user_name, user_str);
+    map_set(&usr_data, user_name, &user_str);
  
     //test to see what is in the map
  //  uint8_t * val = map_get(&usr_data, user_name);
@@ -72,10 +73,13 @@ int main()//This would change from main to be used in program
 {
    char user_name [] = "James";
    
-   uint8_t user_pin [] = {0x23, 0x25, 0x27};//The size of this array is the size of the pin and should be universal valued
+   uint8_t user_pin [3] = {0x23, 0x25, 0x27};//The size of this array is the size of the pin and should be universal valued
    int n = 3;
    char user_str [n];
    user_str[n] = '\0';
+
+    int conversion = atoi((const char *) user_pin);
+    printf("testing: %d\n", conversion);
 
   // printf ("my name is: %s\n", user_name);
 
