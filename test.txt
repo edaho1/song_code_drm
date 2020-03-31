@@ -1,0 +1,1 @@
+This is just to test to make sure I can read a file in binary mode and encrpt it.

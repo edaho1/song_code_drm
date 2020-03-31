@@ -81,7 +81,7 @@ int main(){
     //static uint8_t * mpriv_key[ECC_PRV_KEY_SIZE] = {0x55,0xff,0x72,0x56,0x3e,0x87,0x3c,0xc3,0xbe,0x29,0x7e,0xd3,0x32,0x52,0x87,0x74,0x37,0xa9,0x9f,0x81,0xb8,0x7d,0x09,0x54,0x57,0xd2,0x93,0x56};
 
     //structure needs
-    struct user *master;// = {mpriv_key, pub_key}; //handling master key for encryption 
+/*    struct user *master;// = {mpriv_key, pub_key}; //handling master key for encryption 
     master= malloc(200*sizeof(char *));
     memcpy(master -> priv_key,mpriv_key,sizeof(mpriv_key));
     memcpy(master -> pub_key,pub_key,sizeof(pub_key));
@@ -95,7 +95,7 @@ int main(){
 
     assert(key_gen(aaron->pub_key, aaron->priv_key));
 
-    //schedule (&nist_key,expected);
+    //schedule (&nist_key,expected);*/
   
  
     encrypt_song (nist_key,raw_song, enc_song,expected);
@@ -107,7 +107,7 @@ int main(){
     }
     printf("\n");
 
-    free(aaron);
+    //free(aaron);
     
 
 }
