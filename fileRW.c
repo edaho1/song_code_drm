@@ -5,28 +5,34 @@
 #include "song.h"
 
 #define AES_BLOCK_SIZE 16
+#define KEYS 16
 
+unsigned char buffer4[4];
+unsigned char buffer2[2];
+unsigned char buffer16[16];
+unsigned char encode[KEYS];
+unsigned char decode[KEYS];
 int fileRead(FILE * inFile);
 
+FILE * inFile;
+//FILE *outFile = NULL;
+char * filename;
+//uint8_t *outfilename,ch;
+// char *  readbuf[7463438];
+int     i = 0;
+int     ret = 0;
+int     inputLength;
+
+
+ struct HEADER header;
 int main(int argc, char **argv)
 {
-    FILE *  inFile = NULL;
-    //FILE *outFile = NULL;
-    uint8_t *filename;
-    //uint8_t *outfilename,ch;
-    filename = (uint8_t) malloc(sizeof(uint8_t) * 1024);
-    //outfilename = (char*) malloc(sizeof(char) * 1024);
-    //this next is for testing
-    //int numAscii;
-
+    filename = (char*) malloc(sizeof(char) * 1024);
+    //readbuf = (char*) malloc(sizeof(char)* 7463206);
     if (filename == NULL) {
     printf("Error in malloc\n");
     exit(1);
     }
-    // if (outfilename == NULL) {
-    // printf("Error in malloc\n");
-    // exit(1);
-    // }
 
     // get file path
     char cwd[1024];
@@ -45,23 +51,6 @@ int main(int argc, char **argv)
         printf("%s\n", filename);
     }
 
-    // if (getcwd(cwd, sizeof(cwd)) != NULL) 
-    // {
-
-    //  strcpy(outfilename, cwd);
-
-    // // get filename from command line
-    //     if (argc < 2) 
-    //     {
-    //         printf("No wave file specified\n");
-    //         return;
-    //     }
-    
-    //     strcat(outfilename, "/");
-    //     strcat(outfilename, argv[2]);
-    //     printf("%s\n", outfilename);
-    // }
-
     // open file
     printf("Opening  file..\n");
     inFile = fopen(filename, "rb");
@@ -69,59 +58,79 @@ int main(int argc, char **argv)
         printf("Error opening file\n");
         exit(1);
     }
-    //int status;
-    fileRead(inFile);
-
-    fclose(inFile);
-    // cleanup before quitting
-    free(filename);
-    //free(outfilename);
-    return 0;
-}
-
-
-int fileRead(FILE * inFile)
-{
-    //performing file stream on audio file
-    //FILE * inFile;
-    
-    uint8_t *   input = 0;
-    int     i = 0;
-    int     ret = 0;
-    int     inputLength;
-    int     length;
-    int     padCounter = 0;
 
     fseek(inFile, 0, SEEK_END);
     inputLength = ftell(inFile);
     fseek(inFile, 0, SEEK_SET);
 
-    length = inputLength;
-    /* pads the length until it evenly matches a block / increases pad number*/
-    while (length % AES_BLOCK_SIZE != 0) {
-        length++;
-        padCounter++;
-    }
+    printf("input length: %d\n", inputLength);
 
-
+    const uint8_t master_key[KEYS] = {
+        0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,
+        0x12,0x43,0x23,0x06,0x54,0xc6,0xff,0x9f
+    };
     /* reads from inFile and writes whatever is there to the input array */
-    ret = fread(input, 1, inputLength, inFile);
+    ret = fread(header.riff, sizeof(header.riff), 1, inFile);
+    printf("(1-4): %s \n", header.riff); 
+    
+    ret = fread(buffer4, sizeof(buffer4), 1, inFile);
+    printf("%u %u %u %u\n", buffer4[0], buffer4[1], buffer4[2], buffer4[3]);
+ // convert little endian to big endian 4 byte int
+    header.overall_size  = buffer4[0] | 
+                            (buffer4[1]<<8) | 
+                            (buffer4[2]<<16) | 
+                            (buffer4[3]<<24);
 
-    if (ret == 0) {
-        printf("Input file does not exist.\n");
-        return -1010;
+    printf("(5-8) Overall size: bytes:%u, Kb:%u \n", header.overall_size,\
+             header.overall_size/1024);
+
+    ret = fread(header.wave, sizeof(header.wave), 1, inFile);
+    printf("(9-12) Wave marker: %s\n", header.wave);
+
+    ret = fread(header.fmt_chunk_marker, sizeof(header.fmt_chunk_marker), 1, inFile);
+    printf("(13-16) Fmt marker: %s\n", header.fmt_chunk_marker);
+
+    buffer16[0] = header.riff[0]; //byte 1
+    buffer16[1] = header.riff[1]; //byte 2
+    buffer16[2] = header.riff[2]; //bute 3
+    buffer16[3] = header.riff[3]; //byte 4
+    buffer16[4] = buffer4[0]; //byte 5
+    buffer16[5] = buffer4[1]; //byte 6
+    buffer16[6] = buffer4[2]; //byte 7
+    buffer16[7] = buffer4[3]; //byte 8
+    buffer16[8] = header.wave[0]; //byte 9
+    buffer16[9] = header.wave[1]; //byte 10
+    buffer16[10] = header.wave[2]; //byte 11
+    buffer16[11] = header.wave[3]; //byte 12
+    buffer16[12] = header.fmt_chunk_marker[0]; //byte 13
+    buffer16[13] = header.fmt_chunk_marker[1]; //byte 14
+    buffer16[14] = header.fmt_chunk_marker[2]; //byte 15
+    buffer16[15] = header.fmt_chunk_marker[3]; //byte16
+
+    printf("first 16 bytes: ");
+    for(i = 0; i<16; i++)
+    {
+        printf("%c", buffer16[i]);
     }
-    for (i = inputLength; i < length; i++) {
-        /* pads the added characters with the number of pads */
-        input[i] = padCounter;
-        printf("%c", input[i]);
+    printf("\n");
+
+    encrypt_song (master_key, buffer16, encode);
+    printf("enc_song: ");
+    for (i = 0; i < 16; i++){
+        printf("%c",encode[i]);
     }
+    printf("\n");
+
+    decrypt_song(master_key, decode, encode);
+    printf("Decrypted: ");
+    for( i = 0;i < 16;i++)
+    {
+        printf("%c",decode[i]);
+    }
+    printf("\n");
 
     
-
-    /* closes the opened files and frees the memory*/
-    memset(input, 0, length);
-    free(input);
-    //fclose(inFile);
-    return ret;
-};
+    free(filename);
+    fclose(inFile);
+    return 0;
+}
