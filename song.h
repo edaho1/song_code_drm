@@ -122,9 +122,9 @@ struct HEADER {
 };
 
 //int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
-int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song, uint8_t * expected);
+int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song); // need to clean song.c since expected result is gone
 //int return_public_key(uint8_t* public_key);
-
+int decrypt_song(uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
 int key_gen(uint8_t * pub_key, uint8_t * priv_key);
 
 //int decrypt_song(const TCAesKeySched_t s, uint8_t* priv_key, uint8_t* public_key);
