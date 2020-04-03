@@ -89,7 +89,8 @@ int main(int argc, char **argv)
 
     ret = fread(header.fmt_chunk_marker, sizeof(header.fmt_chunk_marker), 1, inFile);
     printf("(13-16) Fmt marker: %s\n", header.fmt_chunk_marker);
-
+    // create a cache that handle user request to play song
+    // fill up buffer than read when request
     buffer16[0] = header.riff[0]; //byte 1
     buffer16[1] = header.riff[1]; //byte 2
     buffer16[2] = header.riff[2]; //bute 3
