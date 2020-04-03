@@ -7,6 +7,7 @@ int main()
     map_str_t m;
     map_init(&m);
     unsigned char hello[5] = "hello";
+    hello[5] = '\0';
     map_set(&m, "testkey", hello);
 
     char **val = map_get(&m, "testkey");
