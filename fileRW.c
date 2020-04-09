@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     printf("Error in malloc\n");
     exit(1);
     }
-
+    // pass in chunk size encrypt
     // get file path
     char cwd[1024];
     if (getcwd(cwd, sizeof(cwd)) != NULL) {

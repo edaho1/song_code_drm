@@ -13,56 +13,27 @@
 
 int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song)
 {
-    //
-    // raw song and enc song is of size 16 bytes while
-    // key is of size 16-bytes
-    //struct tc_aes_key_sched_struct s;
+    /*
+    * raw song and enc song is of size 16 bytes while
+    * key is of size 16-bytes
+    */
+
     int result = TC_PASS;
-
     struct tc_aes_key_sched_struct s;
-    //testing to make sure key schedule was sucessful    
-    //TC_PRINT("AES128 %s (key schedule):\n", __func__);
-	// if (tc_aes128_set_encrypt_key(&s, key) == 0) 
-    // {
-	// 	TC_ERROR("AES128 ENC %s key schedule failed.\n", __func__);
-	// 	result = TC_FAIL;
-	// 	//goto exitTest1;
-	// }
-    // result = check_result(1, expected.words, sizeof(expected.words), s.words,
-    //             sizeof(s.words));
-
     tc_aes128_set_encrypt_key(&s, key);
-    //TC_PRINT("pass key schedule");
-
-    // exitTest1:
-    // 	TC_END_RESULT(result);
-    // 	return result;
-
-    // TC_PRINT("AES128 %s (NIST encryption test):\n", __func__);
-
-	// (void)tc_aes128_set_encrypt_key(&s, key);
-	// if (tc_aes_encrypt(enc_song, raw_song, &s) == 0) 
-    // {
-	// 	TC_ERROR("AES128 %s (encryption) failed.\n",
-	// 		 __func__);
-	// 	result = TC_FAIL;
-	// 	goto exitTest2;
-	// }
-
-	//result = check_result(2, expected, sizeof(expected), enc_song, sizeof(enc_song));
-
-    // exitTest2:
-    //     TC_END_RESULT(result);
-
-    //     return result;
-
-        tc_aes_encrypt(enc_song, raw_song, &s);
+    tc_aes_encrypt(enc_song, raw_song, &s);
 
 };
 
 
 int decrypt_song(uint8_t* key, uint8_t* raw_song, uint8_t* enc_song)
 {
+    /* 
+    * Decryption of raw song
+    * takes encode song as input along with the key
+    * returns the raw song
+    */
+    
     int result = TC_PASS;
      struct tc_aes_key_sched_struct s;
      tc_aes128_set_decrypt_key(&s, key);
