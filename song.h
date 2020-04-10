@@ -2,6 +2,7 @@
 #define __SONG_H__
 
 #include "aes.h"
+#include <string.h>
 /*#include "ecdh.h"
 #include "utils.h"
 #include "constantsA.h"*/

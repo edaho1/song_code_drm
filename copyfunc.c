@@ -1,12 +1,10 @@
 // use to run code:
 // gcc copyfunc.c aes_encrypt.h aes_decrypt.h sha256.c sha256.h utils.c constantsA.h -o copytest
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "sha256.h"
 #include "constantsA.h"
-
 #include <inttypes.h>
 #include "aes_decrypt.h"
 #include "aes_encrypt.h"
