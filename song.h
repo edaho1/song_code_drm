@@ -2,9 +2,10 @@
 #define __SONG_H__
 
 #include "aes.h"
-#include "ecdh.h"
+#include <string.h>
+/*#include "ecdh.h"
 #include "utils.h"
-#include "constantsA.h"
+#include "constantsA.h"*/
 
 // start code from tinycrypt
 #define PRINT_DATA(fmt, ...) printf(fmt, ##__VA_ARGS__)
@@ -91,17 +92,17 @@ static inline unsigned int check_result(unsigned int testnum, const void *expect
 /* This code attempt to solve the drm problem of song encryption and decryption */
 
 /* structure for song protection */
- struct mvpdata{
- 	uint8_t * enc_song[16];
-    uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
- };
+//  struct mvpdata{
+//  	uint8_t * enc_song[16];
+//     uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
+//  };
 
 
-struct user{
-    uint8_t priv_key[ECC_PRV_KEY_SIZE];
-    uint8_t pub_key[ECC_PUB_KEY_SIZE];
-    uint8_t username[15];
-};
+// struct user{
+//     uint8_t priv_key[ECC_PRV_KEY_SIZE];
+//     uint8_t pub_key[ECC_PUB_KEY_SIZE];
+//     uint8_t username[15];
+// };
 
 // this struct is for reading the audio file
 // WAVE file header format
@@ -122,9 +123,9 @@ struct HEADER {
 };
 
 //int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
-int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song, uint8_t * expected);
+int encrypt_song (uint8_t* key, uint8_t* raw_song, uint8_t* enc_song); // need to clean song.c since expected result is gone
 //int return_public_key(uint8_t* public_key);
-
+int decrypt_song(uint8_t* key, uint8_t* raw_song, uint8_t* enc_song);
 int key_gen(uint8_t * pub_key, uint8_t * priv_key);
 
 //int decrypt_song(const TCAesKeySched_t s, uint8_t* priv_key, uint8_t* public_key);

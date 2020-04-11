@@ -1,0 +1,17 @@
+    else {
+        outFile = fopen(outfilename,"wb");
+        ch = fgetc(inFile);
+        while(ch !=EOF){
+            // using this to test at the moment
+            numAscii = (int) ch;
+            numAscii = numAscii + 5;
+            fprintf(outFile,"%c",numAscii);
+            
+            ch = fgetc(inFile);
+        }
+        printf("File writing complete\n");
+        fclose(outFile);
+    }
+
+
+    
