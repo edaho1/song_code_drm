@@ -92,17 +92,18 @@ static inline unsigned int check_result(unsigned int testnum, const void *expect
 /* This code attempt to solve the drm problem of song encryption and decryption */
 
 /* structure for song protection */
-//  struct mvpdata{
+// typedef struct mvpdata{
 //  	uint8_t * enc_song[16];
 //     uint8_t * master_pub_key[ECC_PUB_KEY_SIZE];
-//  };
+//  }map_data;
 
 
-// struct user{
+// may want to use a typedef on the struct since its getting incorporated into other struct
+// typedef struct user{
 //     uint8_t priv_key[ECC_PRV_KEY_SIZE];
 //     uint8_t pub_key[ECC_PUB_KEY_SIZE];
 //     uint8_t username[15];
-// };
+// }user;
 
 // this struct is for reading the audio file
 // WAVE file header format
