@@ -10,7 +10,7 @@ char ConvertToString(uint8_t val[],char * user_str, char * user_name)
     fptr = fopen("user_pins.txt", "w");
     //Open file to append
 
-    printf("\nThis is the username in ConvertToString: %s", user_name);
+  //  printf("\nThis is the username in ConvertToString: %s", user_name);
 
     uint8_t * ptr= &val[0];
     int n = 3; //n would be the number of terms in user_pin a fixed value
@@ -20,9 +20,10 @@ char ConvertToString(uint8_t val[],char * user_str, char * user_name)
     //This takes advantage of consecutive values of an array
     }
     fprintf(fptr,":");
-    fprintf(fptr,"%s", user_str);
-    fprintf(fptr,":");
     fprintf(fptr,"%s", user_name);
+    fprintf(fptr,":");
+    fprintf(fptr,"%s", user_str);
+
     printf("\nThis is the uint8_t as a string: %s\n", user_str);
     fclose(fptr);
     read_file();
@@ -37,6 +38,7 @@ int read_file()
     int n = 0;
     fptr = fopen("user_pins.txt", "r") ;
     while (fscanf(fptr, "%s", data) != EOF);
+    printf("\nThis is the data in user_pins: %s\n", data);
 
     tkptr = strtok(data, ":");
 
@@ -47,7 +49,7 @@ int read_file()
     tokens[++n] = tkptr; 
     n=n+1;
     }
-    printf("\nThis is the data in user_pins: %s\n", data);
+    
     return;
 }
 
@@ -71,9 +73,10 @@ int mp_data(char * user_name, char * user_str)
 int main()//This would change from main to be used in program
 {
    char user_name [] = "James";
-   
-   uint8_t user_pin [3] = {0x42, 0x21, 0x27};//The size of this array is the size of the pin and should be universal valued
+   //Call function here or read from file
    int n = 3;
+   uint8_t user_pin [3] = {0x42, 0x21, 0x27};//The size of this array is the size of the pin and should be universal valued
+   
    char user_str [n];
    user_str[n] = '\0';
 
