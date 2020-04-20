@@ -37,7 +37,7 @@ int     inputLength;
 int main(int argc, char **argv)
 {
     filename = (char*) malloc(sizeof(char) * 1024);
-    readbuff = (char*) malloc(sizeof(char)* 16000);
+    //readbuff = (char*) malloc(sizeof(char)* 16000);
     if (filename == NULL) {
     printf("Error in malloc\n");
     exit(1);
