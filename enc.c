@@ -16,10 +16,10 @@ unsigned char buffer16[16] = {0};
 
 int main(int argc, char **argv)
 {
-    FILE * inFile;
+    FILE * inFile, *inFile2;
     FILE * outFile;
     int inputLength;
-    char * filename,*filename2;
+    char * filename,*filename2, *filename3;
 
     static uint8_t master_key[KEYS] = {
         0x65,0x37,0x36,0x30,0x03,0x53,0x13,0x40,
@@ -28,13 +28,18 @@ int main(int argc, char **argv)
 
     filename = (char*) malloc(sizeof(char) * 1024);
     filename2 = (char*) malloc(sizeof(char) * 1024);
-    
+    filename3 = (char*) malloc(sizeof(char) * 1024);
+
     if (filename == NULL) {
     printf("Error in malloc\r\n");
     exit(1);
     }
 
     if (filename2 == NULL){
+        printf("Error in malloc\r\n");
+        exit(1);
+    }
+    if (filename3 == NULL){
         printf("Error in malloc\r\n");
         exit(1);
     }
@@ -45,6 +50,7 @@ int main(int argc, char **argv)
     
         strcpy(filename, cwd);
         strcpy(filename2,cwd);
+        strcpy(filename3,cwd);
 
         // get filename from command line
         if (argc < 2) {
@@ -55,13 +61,20 @@ int main(int argc, char **argv)
             printf("no output file specified\r\n");
             return;
         }
-        
+        if (argc < 4){
+            printf("no output file specified\r\n");
+            return;
+        }
+
         strcat(filename, "/");
         strcat(filename2,"/");
+        strcat(filename3,"/");
         strcat(filename, argv[1]);
         strcat(filename2,argv[2]);
+        strcat(filename3,argv[3]);
         printf("%s\r\n", filename);
         printf("%s\r\n", filename2);
+        printf("%s\r\n", filename3);
     }
 
     // open file
@@ -80,8 +93,13 @@ int main(int argc, char **argv)
      if (outFile == NULL) {
         printf("Error opening file\n");
         exit(1);
-    }   
+    }
 
+    inFile2 = fopen(filename3, "rb");
+    if (inFile2 == NULL) {
+        printf("Error opening file\n");
+        exit(1);
+    }
 
     //printf("input length: %d\n", inputLength);
     
@@ -94,7 +112,7 @@ int main(int argc, char **argv)
      */ 
 
 
-    unsigned char encode[7463438];
+    unsigned char encode [7463454]; //[7463438]; This is the value before Peter touched it
     unsigned char tmp[16];
     size_t read = 0;
     size_t write; 
@@ -111,11 +129,22 @@ int main(int argc, char **argv)
             p+=16;
         }
     }
+    //This is Peter adding 16bytes for region
+    //encode + 16 = 7463454
+    // FILE * fptr;
+    // fptr = fopen("region_data.txt","rb");
+    unsigned char reg_buffer[16];
+    // read = fread (&reg_buffer, sizeof(char)*16, 1, fptr);
+    // enc_and_region = strcat(reg_buffer, encode);
+    read = fread(&reg_buffer,sizeof(char)*16,1,inFile2);
+    unsigned char storage[7463438+16];
+    strcpy(storage,reg_buffer);
+    strcat(storage, encode);
 
+    //7463454
     // writing output to file
-    write = fwrite(encode, sizeof(char)*7463438,1, outFile);
-
-
+    write = fwrite(storage, sizeof(char)*7463454,1, outFile);
+    //write = fwrite(encode, sizeof(char)*7463438,1, outFile);
 
     free(filename);
     free(filename2);

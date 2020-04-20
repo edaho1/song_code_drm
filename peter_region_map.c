@@ -18,46 +18,50 @@ uint8_t region_key[16] = {
 
 int region_map(char * song_name, char * song_region)
 {
+
     map_str_t region_data;
     map_init(&region_data);
     map_set(&region_data, song_name, song_region);
-    //map_set(&region_data, song_name, song_region);
-    printf("%s\n", song_region);
+
+    //printf("%s\n", song_region);
     
     char ** sample = map_get(&region_data, song_name);
     printf("map store val: %s\n", *sample);
 
-    //regions should be incorporated
-   //struct map_t * s_ptr = malloc(sizeof(map_t));
-    //s_ptr = region_data;
+
+    size_t write;
+
     FILE * file;
-    file = fopen("song_regions", "w");
-    if (file != NULL)
-    {
-        fwrite(&region_data, sizeof(map_str_t), 1, file);
-    }
+    file = fopen("region_data.bin", "wb");
+    
+    write = fwrite(song_region, sizeof(char)*16,1, file);
+    
+    fclose(file);
+     
     read_file();
-    fclose (file);
-   // free(s_ptr);
-    return;
+
 }
 int read_file()
 {
     FILE * file;
-    map_str_t file_data;
-    map_init(&file_data);
+    unsigned char data[16];
+    size_t read = 0;
+    size_t write;
 
-    file = fopen("song_regions", "r");
+    file = fopen("region_data.txt", "rb");
     if (file != NULL)
     {
-    fread(&file_data, sizeof(map_str_t), 1, file);
+        read = fread(data, sizeof(char)*16, 1, file);
+        printf("%s\r\n", data);
+        printf("read data: ");
+        for (int i = 0;i < 16; i++){
+            printf("%c", data[i]);
+        }
+        printf("\r\n");
 
-    int * sample = map_get(&file_data, "Billy_Jean");
-    printf("This is what is in file: %ls\n", sample); 
+        fclose(file);
     }
-    else
-    {
-    printf("Why me");}
+
 }
 int main()
 {
@@ -69,6 +73,7 @@ int main()
     song_region[16] ='\0';
     printf("%s\r\n", song_region);
 
+    //hash the regions
     char song_name [] = "Billy_Jean";
     region_map(song_name, song_region);
     return 0;
