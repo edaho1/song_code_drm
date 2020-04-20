@@ -1,3 +1,8 @@
+// to run this code use:
+// gcc song.c aes_encrypt.c aes_decrypt.c utils.c enc.c -g -O0 -o enc
+// ./enc <song filename> <output filename> 
+// ./enc <song filename> <output filename> <miscallaneous-only used when something else is added>
+
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
@@ -94,7 +99,7 @@ int main(int argc, char **argv)
      */ 
 
 
-    unsigned char encode[7463438];
+    unsigned char encode[inputLength];
     unsigned char tmp[16];
     size_t read = 0;
     size_t write; 
@@ -103,11 +108,11 @@ int main(int argc, char **argv)
 
     while ((read = fread(&buffer16,sizeof(char)*16,1,inFile))> 0)
     {
-        if( read != 7463438/16){
+        if( read != inputLength/16){
             for (k = 0; k < 16; k++){
                 tmp[k] = buffer16[k];
             }
-            encrypt_song(master_key,tmp, p);
+            assert(encrypt_song(master_key,tmp, p));
             p+=16;
         }
     }
